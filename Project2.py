@@ -48,8 +48,6 @@ Lr = math.tan(20 * math.pi / 180) * Lt # Ly
 ## Reaction Forces
 Ay = (1 / (point_b - point_a)) * (Fa * (o_diameter / 2) - Fr * (point_b - point_o) + Pr * (point_b - point_c) - Lr * (point_b - point_d) + d_weight * (point_b - point_d) + c_weight * (point_b - point_c) + o_weight * (point_b - point_o))
 By = Pr - Fr - Lr - Ay + d_weight + c_weight + o_weight
-print("Ay: ", Ay)
-print("By: ", By)
 
 Az = (1 / (point_b - point_a)) * (Fr * (point_b - point_o) + Pr * (point_b - point_c) + Lr * (point_b - point_d))
 Bz = Fr + Pr + Lr - Az
