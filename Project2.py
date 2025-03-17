@@ -77,6 +77,8 @@ distances = [0] + distances + [25]
 forces_xy = [0] + forces_xy + [0]
 forces_xz = [0] + forces_xz + [0]
 
+forces_xz_diagram = [-x for x in forces_xz]
+
 # Calculate bending moments
 new_distances = [0]
 moments_xy = [0]
@@ -84,7 +86,7 @@ moments_xz = [0]
 
 for i in range(1, len(distances)):
 	moment_xy = moments_xy[-1] + forces_xy[i - 1] * (distances[i] - distances[i - 1])
-	moment_xz = moments_xz[-1] + forces_xz[i - 1] * (distances[i] - distances[i - 1])
+	moment_xz = moments_xz[-1] + forces_xz_diagram[i - 1] * (distances[i] - distances[i - 1])
 
 	if i == 2:  # Point O - applied moment from Fa
 		new_distances.append(distances[i])  # distance before the drop
@@ -119,7 +121,7 @@ plt.legend()
 
 # Shear Force Diagram - x-z plane
 plt.subplot(2, 2, 2)
-plt.step(distances, forces_xz, where='post', label="Shear Force", color='b')
+plt.step(distances, forces_xz_diagram, where='post', label="Shear Force", color='b')
 plt.title("Shear Force Diagram (x-z plane)")
 plt.xlabel("Distance (inches)")
 plt.ylabel("Shear Force (lbs)")
