@@ -52,30 +52,39 @@ By = Pr - Fr - Lr - Ay + d_weight + c_weight + o_weight
 Az = (1 / (point_b - point_a)) * (Fr * (point_b - point_o) + Pr * (point_b - point_c) + Lr * (point_b - point_d))
 Bz = Fr + Pr + Lr - Az
 
-## Shear Force Diagram
+distances = [0 , point_a, point_o, point_c, point_d, point_b, 25]
 
-# Define distances and forces
-distances = [point_a, point_o, point_c, point_d, point_b]
-# Calculate forces at each point
 forces_xy = [
+	0,
     Ay,
     Ay - o_weight + Fr,
     Ay - o_weight + Fr - c_weight - Pr,
     Ay - o_weight + Fr - c_weight - Pr - d_weight + Lr,
-    Ay - o_weight + Fr - c_weight - Pr - d_weight + Lr + By
+    Ay - o_weight + Fr - c_weight - Pr - d_weight + Lr + By,
+	0
 ]
 forces_xz = [
+	0,
 	Az,
 	Az - Fr,
 	Az - Fr - Pr,
 	Az - Fr - Pr - Lr,
-	Az - Fr - Pr - Lr + Bz 
+	Az - Fr - Pr - Lr + Bz,
+	0
 ]
 
-# Add starting and ending points
-distances = [0] + distances + [25]
-forces_xy = [0] + forces_xy + [0]
-forces_xz = [0] + forces_xz + [0]
+axial_forces = [0, 0, Fa, Fa, Fa, Fa-Fa, 0]
+
+torques = [
+	0,
+	0,
+	Ft * (o_diameter / 2), 
+	Ft * (o_diameter / 2) - Pt * (c_diameter / 2), 
+	Ft * (o_diameter / 2) - Pt * (c_diameter / 2) + Lt * (d_diameter / 2), 
+	0,
+	0
+	]
+
 
 # Calculate bending moments
 new_distances = [0]
@@ -100,7 +109,7 @@ for i in range(1, len(distances)):
 plt.figure()
 
 # Shear Force Diagram - x-y plane
-plt.subplot(2, 2, 1)
+plt.subplot(2, 3, 1)
 plt.step(distances, forces_xy, where='post', label="Shear Force", color='b')
 plt.title("Shear Force Diagram (x-y plane)")
 plt.xlabel("Distance (inches)")
@@ -109,7 +118,7 @@ plt.grid(True)
 plt.legend()
 
 # Bending Moment Diagram - x-y plane
-plt.subplot(2, 2, 3)
+plt.subplot(2, 3, 4)
 plt.plot(new_distances, moments_xy, label="Bending Moment", color='r')
 plt.title("Bending Moment Diagram (x-y plane)")
 plt.xlabel("Distance (inches)")
@@ -118,7 +127,7 @@ plt.grid(True)
 plt.legend()
 
 # Shear Force Diagram - x-z plane
-plt.subplot(2, 2, 2)
+plt.subplot(2, 3, 2)
 plt.step(distances, forces_xz, where='post', label="Shear Force", color='b')
 plt.title("Shear Force Diagram (x-z plane)")
 plt.xlabel("Distance (inches)")
@@ -127,11 +136,29 @@ plt.grid(True)
 plt.legend()
 
 # Bending Moment Diagram - x-z plane
-plt.subplot(2, 2, 4)
+plt.subplot(2, 3, 5)
 plt.plot(distances, moments_xz, label="Bending Moment", color='r')
 plt.title("Bending Moment Diagram (x-z plane)")
 plt.xlabel("Distance (inches)")
 plt.ylabel("Bending Moment (lb-in)")
+plt.grid(True)
+plt.legend()
+
+# Axial Force Diagram
+plt.subplot(2, 3, 3)
+plt.step(distances, axial_forces, where='post', label="Axial Force", color='b')
+plt.title("Axial Force Diagram")
+plt.xlabel("Distance (inches)")
+plt.ylabel("Axial Force (lbs)")
+plt.grid(True)
+plt.legend()
+
+# Torque Diagram
+plt.subplot(2, 3, 6)
+plt.step(distances, torques, where='post', label="Torque", color='r')
+plt.title("Torque Diagram")
+plt.xlabel("Distance (inches)")
+plt.ylabel("Torque (lb-in)")
 plt.grid(True)
 plt.legend()
 
