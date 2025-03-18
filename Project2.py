@@ -110,7 +110,7 @@ forces_xz = [
 forces_xz_diagram = [-x for x in forces_xz]
 
 # Axial forces
-axial_forces = [0, 0, Fa, Fa, Fa, Fa - Fa, 0]
+axial_forces = [0, 0, -Fa, -Fa, -Fa, Fa - Fa, 0]
 
 # Calculate bending moments
 # Torque along the shaft
@@ -123,6 +123,7 @@ torques = [
 	0,
 	0,
 ]
+torques_diagram = [-x for x in torques]
 
 # ------------------------------
 # Bending Moment Calculations
@@ -201,7 +202,7 @@ plt.legend()
 
 # Torque Diagram
 plt.subplot(2, 3, 6)
-plt.step(distances, torques, where="post", label="Torque", color="r")
+plt.step(distances, torques_diagram, where="post", label="Torque", color="r")
 plt.title("Torque Diagram")
 plt.xlabel("Distance (inches)")
 plt.ylabel("Torque (lb-in)")
